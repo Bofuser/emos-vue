@@ -43,7 +43,7 @@ export default {
 				let token = that.$cookies.get('token');
 				//向WebSocket服务类发送消息，让服务类缓存Session对象，可以推送消息给当前页面
 				that.$socket.sendObj({ opt: 'pay_amect', token: token });
-				//接收服务端推送的消息
+				//接收服务端推送的消息，表示付款成功
 				that.$options.sockets.onmessage = function(resp) {
 					let data = resp.data;
 					// console.log(data)

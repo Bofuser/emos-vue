@@ -405,6 +405,9 @@ export default {
 				this.$refs.pay.init(id);
 			});
 		 },
+		 reportHandle: function() {
+			this.$router.push({ name: 'AmectReport' });
+		 }
 		 
 		
 

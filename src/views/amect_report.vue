@@ -9,7 +9,7 @@
 					size="medium"
 					clearable="clearable"
 				>
-					<el-option v-for="one in deptList" :label="one.deptName" :value="one.id" />
+					<el-option v-for="one in deptList" :key="one.id" :label="one.deptName" :value="one.id" />
 				</el-select>
 			</el-form-item>
 			<el-form-item>
@@ -20,7 +20,7 @@
 					size="medium"
 					clearable="clearable"
 				>
-					<el-option v-for="one in amectTypeList" :label="one.type" :value="one.id" />
+					<el-option v-for="one in amectTypeList" :key="one.id" :label="one.type" :value="one.id" />
 				</el-select>
 			</el-form-item>
 			<el-form-item>
@@ -67,18 +67,27 @@ export default {
 		};
 	},
 	methods: {
+		/**
+		 * 加载部门信息
+		 */
 		loadDeptList: function() {
 			let that = this;
 			that.$http('dept/searchAllDept', 'GET', null, true, function(resp) {
 				that.deptList = resp.list;
 			});
 		},
+		/**
+		 * 加载罚款类型信息
+		 */
 		loadAmectTypeList: function() {
 			let that = this;
 			that.$http('amect_type/searchAllAmectType', 'GET', {}, true, function(resp) {
 				that.amectTypeList = resp.list;
 			});
 		},
+		/**
+		 * 加载报表信息
+		 */
 		loadDataList: function() {
 			let that = this;
 			that.dataListLoading = true;
@@ -96,6 +105,7 @@ export default {
 			}
 
 			that.$http('amect/searchChart', 'POST', data, true, function(resp) {
+				//chart_1 为查询罚款类型图表
 				let chart_1 = resp.chart_1;
 				let temp = [];
 				for (let one of chart_1) {
@@ -147,6 +157,7 @@ export default {
 					myChart.setOption(option_1);
 				}
 
+				// chart_2 为查询罚款金额区间图表
 				let chart_2 = resp.chart_2;
 				temp = [];
 				for (let one of chart_2) {
@@ -154,6 +165,7 @@ export default {
 						temp.push({ name: one.title, value: one.ct });
 					}
 				}
+				// 绘制图表
 				let option_2 = {
 					title: {
 						show: false,
@@ -198,6 +210,7 @@ export default {
 					myChart.setOption(option_2);
 				}
 
+				//chart_3 为查询未付款与已付款的圆形图
 				let chart_3 = resp.chart_3;
 				temp = [];
 				for (let one of chart_3) {
@@ -205,6 +218,7 @@ export default {
 						temp.push({ name: one.title, value: one.ct });
 					}
 				}
+				//绘制图片
 				let option_3 = {
 					title: {
 						show: false,
@@ -247,13 +261,16 @@ export default {
 					myChart = that.$echarts.init($('#chart-3')[0]);
 					myChart.setOption(option_3);
 				}
-
 				console.log(resp);
+
+				//付款人数和未付款人数每月曲线图
+				//chart_4_1为未付款人数
 				let chart_4_1 = resp.chart_4_1;
 				let data_1 = [];
 				for (let one of chart_4_1) {
 					data_1.push(one.ct);
 				}
+				//chart_4_2 为已付款人数
 				let chart_4_2 = resp.chart_4_2;
 				let data_2 = [];
 				for (let one of chart_4_2) {
@@ -314,7 +331,7 @@ export default {
 					],
 					series: [
 						{
-							name: '已交费',
+							name: '未交费',
 							type: 'line',
 							stack: '总量',
 							areaStyle: {},
@@ -325,7 +342,7 @@ export default {
 							data: data_1
 						},
 						{
-							name: '未交费',
+							name: '已交费',
 							type: 'line',
 							stack: '总量',
 							areaStyle: {},
@@ -341,6 +358,9 @@ export default {
 				myChart.setOption(option_4);
 			});
 		},
+		/**
+		 * 查询生成得报表
+		 */
 		searchHandle: function() {
 			this.$refs['dataForm'].validate(valid => {
 				if (valid) {

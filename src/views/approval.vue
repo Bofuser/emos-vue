@@ -44,6 +44,7 @@
 						<!-- 当测试会议展开来就是以下内容的详细信息 -->
 						<table class="content-table">
 							<!-- 审批中包含三大主要功能：会议申请，员工请假和报销申请，每个功能中的详细信息都不一样 -->
+							<!-- 会议申请审批 -->
 							<tbody v-if="scope.row.type == '会议申请'">
 								<tr>
 									<th><span>主题</span></th>
@@ -74,6 +75,8 @@
 									</td>
 								</tr>
 							</tbody>
+
+							<!-- 员工请假审批 -->
 							<tbody v-if="scope.row.type == '员工请假'">
 								<tr>
 									<th><span>请假原因</span></th>
@@ -104,6 +107,8 @@
 									</td>
 								</tr>
 							</tbody>
+
+							<!-- 报销审批 -->
 							<tbody v-if="scope.row.type == '报销申请'">
 								<tr>
 									<th><span>申请人</span></th>

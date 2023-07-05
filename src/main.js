@@ -19,7 +19,7 @@ app.use(router) //挂载路由插件
 
 //使用 WebSocket，后端项目给前端页面推送通知更
 import VueNativeSock from "vue-native-websocket-vue3";
-app.use(VueNativeSock,"ws://localhost:8090/emos-api/socket",{ 
+app.use(VueNativeSock,"ws://192.168.111.1:8090/emos-api/socket",{ 
     "format": "json"
 });
 
